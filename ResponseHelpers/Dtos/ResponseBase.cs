@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ResponseBase.Dtos;
 
@@ -137,4 +138,15 @@ public sealed class ResponseBase<T>
       => (int)this.StatusCode >= 500 && (int)this.StatusCode < 600;
     public bool IsNotSuccessfull()
       => !IsSuccessfull();
+
+    public static implicit operator ObjectResult(ResponseBase<T> response)
+      => new ObjectResult(response)
+      {
+        StatusCode = (int)response.StatusCode
+      };
+    
+    public static implicit operator T(ResponseBase<T> response)
+      => (T)response.Data;
+ 
+
 }
