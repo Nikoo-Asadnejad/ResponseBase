@@ -7,6 +7,7 @@ public struct ResponseMessages
     public const string Accepted = "عملیات با موفقعیت انجام شد";
     
     public const string BadRequest = "داده ورودی اشتباه است";
+    public const string Duplicated = "داده ورودی تکراری است";
     public const string UnAuthorized = "لطفا ابتدا وارد شودید";
     public const string Forbidden = "دسترسی لازم برای این درخواست را ندارید";
     public const string NotFound = "دیتای مورد نظر یافت نشد";

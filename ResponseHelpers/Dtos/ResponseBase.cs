@@ -22,67 +22,109 @@ public class ResponseBase<T>
       this.Message = message;
     }
 
-    public ResponseBase<T> Ok(T data, string title = null, string message = null)
+    public ResponseBase<T> Ok(T data,string message = null)
     {
       this.Data = data;
       this.HttpStatusCode = HttpStatusCode.OK;
-      this.Message = message == null ? "عملیات با موفقعیت انجام شد" : message;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.Ok: message;
       return this;
     }
-    public ResponseBase<T> Accepted(T data, string title = null, string message = null)
+    public ResponseBase<T> Created(T data, string message = null)
     {
       this.Data = data;
-      this.HttpStatusCode = HttpStatusCode.OK;
-      this.Message = message == null ? "عملیات با موفقعیت انجام شد" : message;
+      this.HttpStatusCode = HttpStatusCode.Created;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.Created: message;
       return this;
     }
-    public ResponseBase<T> Created(T data, string title = null, string message = null)
+    public ResponseBase<T> Accepted(T data,string message = null)
     {
       this.Data = data;
-      this.HttpStatusCode = HttpStatusCode.OK;
-      this.Message = message == null ? "عملیات با موفقعیت انجام شد" : message;
+      this.HttpStatusCode = HttpStatusCode.Accepted;
+      this.Message =string.IsNullOrWhiteSpace(message) ? ResponseMessages.Accepted: message;
       return this;
     }
     
-    public ResponseBase<T> BadRequest(string title = null, string message = null)
+    
+    public ResponseBase<T> BadRequest(string message = null)
     {
       this.HttpStatusCode = HttpStatusCode.BadRequest;
-      this.Message = message == null ? "خطای سرور" : message;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.BadRequest: message;
       return this;
     }
-    public ResponseBase<T> Duplicated(string title = null, string message = null)
+    public ResponseBase<T> Duplicated(string message = null)
     {
       this.HttpStatusCode = HttpStatusCode.BadRequest;
-      this.Message = message == null ? "داده ورودی تکراری است" : message;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.Duplicated: message;
       return this;
     }
-    public ResponseBase<T> UnAuthorized (string title = null, string message = null)
+    public ResponseBase<T> UnAuthorized (string message = null)
     {
       this.HttpStatusCode = HttpStatusCode.Unauthorized;
-      this.Message = message == null ? "برای دسترسی به این بخش باید ابتدا وارد سیستم شوید" : message;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.UnAuthorized: message;
       return this;
     }
-    public ResponseBase<T> AccessDenied(string title = null, string message = null)
+    public ResponseBase<T> Forbidden(string message = null)
     {
       this.HttpStatusCode = HttpStatusCode.Forbidden;
-      this.Message = message == null ? "برای دسترسی به این بخش باید ابتدا وارد سیستم شوید" : message;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.Forbidden: message;
       return this;
     }
-    public ResponseBase<T> NotFound(string title = null, string message = null)
+    public ResponseBase<T> NotFound(string message = null)
     {
       this.HttpStatusCode = HttpStatusCode.NotFound;
-      this.Message = message == null ? "دیتای مورد نظر یافت نشد" : message;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.NotFound: message;
+      return this;
+    }
+    public ResponseBase<T> MethodNotAllowed(string message = null)
+    {
+      this.HttpStatusCode = HttpStatusCode.MethodNotAllowed;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.MethodNotAllowed: message;
+      return this;
+    }
+    public ResponseBase<T> NotAccepted(string message = null)
+    {
+      this.HttpStatusCode = HttpStatusCode.NotAcceptable;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.NotAccepted: message;
+      return this;
+    }
+    public ResponseBase<T> UnSupportedMediaType(string message = null)
+    {
+      this.HttpStatusCode = HttpStatusCode.UnsupportedMediaType;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.UnSupportedMediaType: message;
+      return this;
+    }
+    public ResponseBase<T> Conflict(string message = null)
+    {
+      this.HttpStatusCode = HttpStatusCode.Conflict;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.Conflict: message;
+      return this;
+    }
+    public ResponseBase<T> PaymentRequired(string message = null)
+    {
+      this.HttpStatusCode = HttpStatusCode.PaymentRequired;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.PaymentRequired: message;
+      return this;
+    }
+    public ResponseBase<T> TooManyRequest(string message = null)
+    {
+      this.HttpStatusCode = HttpStatusCode.TooManyRequests;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.TooManyRequest: message;
       return this;
     }
 
-  
-    public ResponseBase<T> ServerError(string title = null, string message = null)
+   
+    public ResponseBase<T> ServerError(string message = null)
     {
       this.HttpStatusCode = HttpStatusCode.InternalServerError;
-      this.Message = message == null ? "خطای سرور" : message;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.InternalServerError: message;
       return this;
     }
-    
+    public ResponseBase<T> ServiceUnAvailable( string message = null)
+    {
+      this.HttpStatusCode = HttpStatusCode.ServiceUnavailable;
+      this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.ServiceUnAvailable: message;
+      return this;
+    }
 
    
 
