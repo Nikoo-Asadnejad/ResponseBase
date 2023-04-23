@@ -143,9 +143,24 @@ public sealed class ResponseBase<T>
         StatusCode = (int)response.StatusCode
       };
     
+    public static implicit operator ResponseBase<T>(ObjectResult objectResult)
+      => new ResponseBase<T>
+      {
+        StatusCode = (HttpStatusCode)objectResult.StatusCode,
+        Message = ResponseMessages.GetStatusMessage((HttpStatusCode)objectResult.StatusCode),
+        Data = (T)objectResult.Value
+      };
+    
     public static implicit operator T(ResponseBase<T> response)
       => (T)response.Data;
 
+    public static implicit operator ResponseBase<T>(HttpStatusCode statusCode)
+      => new ResponseBase<T>()
+      {
+        StatusCode = statusCode,
+        Message = ResponseMessages.GetStatusMessage(statusCode)
+      };
+    
     public static implicit operator ResponseBase<T>((HttpStatusCode statusCode, string? message) tuple)
       => new ResponseBase<T>()
       {
@@ -161,6 +176,4 @@ public sealed class ResponseBase<T>
         Data = tuple.data
       };
     
-
-
 }
