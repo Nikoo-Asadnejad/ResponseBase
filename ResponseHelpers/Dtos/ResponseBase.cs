@@ -49,7 +49,6 @@ public sealed class ResponseBase<T>
       this.Message =string.IsNullOrWhiteSpace(message) ? ResponseMessages.Accepted: message;
       return this;
     }
-    
     public ResponseBase<T> BadRequest(string message = null)
     {
       this.StatusCode = HttpStatusCode.BadRequest;
@@ -116,7 +115,6 @@ public sealed class ResponseBase<T>
       this.Message = string.IsNullOrWhiteSpace(message) ? ResponseMessages.TooManyRequest: message;
       return this;
     }
-    
     public ResponseBase<T> ServerError(string message = null)
     {
       this.StatusCode = HttpStatusCode.InternalServerError;
@@ -147,6 +145,22 @@ public sealed class ResponseBase<T>
     
     public static implicit operator T(ResponseBase<T> response)
       => (T)response.Data;
- 
+
+    public static implicit operator ResponseBase<T>((HttpStatusCode statusCode, string? message) tuple)
+      => new ResponseBase<T>()
+      {
+          StatusCode = tuple.statusCode,
+          Message = tuple.message ?? ResponseMessages.GetStatusMessage(tuple.statusCode)
+      };
+    
+    public static implicit operator ResponseBase<T>((HttpStatusCode statusCode,T data ,string? message) tuple)
+      => new ResponseBase<T>()
+      {
+        StatusCode = tuple.statusCode,
+        Message =tuple.message ?? ResponseMessages.GetStatusMessage(tuple.statusCode),
+        Data = tuple.data
+      };
+    
+
 
 }

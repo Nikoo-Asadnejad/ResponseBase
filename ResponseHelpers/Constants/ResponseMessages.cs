@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Net;
+
 namespace ResponseBase.Dtos;
 
 public struct ResponseMessages
@@ -5,7 +8,7 @@ public struct ResponseMessages
     public const string Ok = "عملیات با موفقعیت انجام شد";
     public const string Created = "عملیات با موفقعیت انجام شد";
     public const string Accepted = "عملیات با موفقعیت انجام شد";
-    
+     
     public const string BadRequest = "داده ورودی اشتباه است";
     public const string Duplicated = "داده ورودی تکراری است";
     public const string UnAuthorized = "لطفا ابتدا وارد شودید";
@@ -24,6 +27,27 @@ public struct ResponseMessages
 
     public const string Error = "خطایی رخ داده است";
     public static string ErrorOnAction(string action) => $" با خطا مواجه شد {action} ";
-    public static string SucessOnAction(string action) => $" با موافقیت انجام شد {action} ";
+    public static string SucessOnAction(string action) => $" با موفقیت انجام شد {action} ";
 
+    public static string GetStatusMessage(HttpStatusCode status)
+        => status switch
+        {
+            HttpStatusCode.OK => Ok,
+            HttpStatusCode.Accepted => Accepted,
+            HttpStatusCode.Created => Created,
+            HttpStatusCode.BadRequest => BadRequest,
+            HttpStatusCode.Unauthorized => UnAuthorized,
+            HttpStatusCode.Forbidden=> Forbidden,
+            HttpStatusCode.NotFound=> NotFound,
+            HttpStatusCode.MethodNotAllowed => MethodNotAllowed,
+            HttpStatusCode.NotAcceptable => NotAccepted,
+            HttpStatusCode.UnsupportedMediaType => UnSupportedMediaType,
+            HttpStatusCode.RequestTimeout => RequestTimedOut,
+            HttpStatusCode.Conflict => Conflict,
+            HttpStatusCode.PaymentRequired => PaymentRequired,
+            HttpStatusCode.TooManyRequests => TooManyRequest,
+            HttpStatusCode.InternalServerError => InternalServerError,
+            HttpStatusCode.ServiceUnavailable => ServiceUnAvailable,
+            _ => Error
+        };
 }
