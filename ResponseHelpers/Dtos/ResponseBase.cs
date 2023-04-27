@@ -3,16 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ResponseBase.Dtos;
 
-public sealed class ResponseBase<T>
+public sealed class ResponseBase<T> : ResponseBase
 {
-    public HttpStatusCode StatusCode { get; set; }
-    public string Message { get; set; }
     public T Data { get; set; }
     
     public ResponseBase()
     {
     }
-    public ResponseBase(HttpStatusCode statusCode, T data = default, string? message = null)
+    public ResponseBase(HttpStatusCode statusCode, T data, string message)
     {
       this.Data = data;
       this.StatusCode = statusCode;
@@ -20,12 +18,19 @@ public sealed class ResponseBase<T>
     }
     public ResponseBase(HttpStatusCode statusCode,string message)
     {
-      this.StatusCode = StatusCode;
+      this.StatusCode = statusCode;
       this.Message = message;
+    }
+    public ResponseBase(HttpStatusCode statusCode,T data)
+    {
+      this.StatusCode = StatusCode;
+      this.Message = ResponseMessages.GetStatusMessage(statusCode);
+      this.Data = data;
     }
     public ResponseBase(HttpStatusCode statusCode)
     {
       this.StatusCode = StatusCode;
+      this.Message = ResponseMessages.GetStatusMessage(statusCode);
     }
     
     public ResponseBase<T> Ok(T data,string message = null)
@@ -151,7 +156,7 @@ public sealed class ResponseBase<T>
         Data = (T)objectResult.Value
       };
     
-    public static implicit operator T(ResponseBase<T> response)
+    public static explicit operator T(ResponseBase<T> response)
       => (T)response.Data;
 
     public static implicit operator ResponseBase<T>(HttpStatusCode statusCode)
@@ -161,11 +166,19 @@ public sealed class ResponseBase<T>
         Message = ResponseMessages.GetStatusMessage(statusCode)
       };
     
-    public static implicit operator ResponseBase<T>((HttpStatusCode statusCode, string? message) tuple)
+    public static implicit operator ResponseBase<T>((HttpStatusCode statusCode, string message) tuple)
       => new ResponseBase<T>()
       {
           StatusCode = tuple.statusCode,
-          Message = tuple.message ?? ResponseMessages.GetStatusMessage(tuple.statusCode)
+          Message = tuple.message 
+      };
+    
+    public static implicit operator ResponseBase<T>((HttpStatusCode statusCode, T data) tuple)
+      => new ResponseBase<T>()
+      {
+        StatusCode = tuple.statusCode,
+        Message =  ResponseMessages.GetStatusMessage(tuple.statusCode),
+        Data = tuple.data
       };
     
     public static implicit operator ResponseBase<T>((HttpStatusCode statusCode,T data ,string? message) tuple)
@@ -176,4 +189,10 @@ public sealed class ResponseBase<T>
         Data = tuple.data
       };
     
+}
+
+public abstract class ResponseBase
+{
+  public HttpStatusCode StatusCode { get; set; }
+  public string Message { get; set; }
 }
