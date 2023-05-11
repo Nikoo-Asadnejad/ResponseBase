@@ -14,6 +14,9 @@ public partial struct ResponseBase<T>
     public bool IsServerError()
         => (int)this.StatusCode >= 500 && (int)this.StatusCode < 600;
     
+    public bool IsUnAuthorized()
+        => (int)this.StatusCode is 401 || (int)this.StatusCode is 403;
+    
     public bool IsNotSuccessfull()
         => !IsSuccessfull();
 }
