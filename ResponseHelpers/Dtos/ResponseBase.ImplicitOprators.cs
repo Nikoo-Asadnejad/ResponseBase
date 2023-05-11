@@ -11,6 +11,12 @@ public partial struct ResponseBase<T>
         {
             StatusCode = (int)response.StatusCode
         };
+    
+    public static implicit operator JsonResult(ResponseBase<T> response)
+        => new JsonResult(response)
+        {
+            StatusCode = (int)response.StatusCode
+        };
 
     public static implicit operator ResponseBase<T>(ObjectResult objectResult)
         => new ResponseBase<T>
