@@ -39,15 +39,46 @@ Here’s a simple example of using `ResponseBase` in a service method:
 ```csharp
 public ResponseBase<User> GetUserById(int userId)
 {
-    var result = new ResponseBase<User>;
+    var result = new ResponseBase<User>();
     var user = _userRepository.FindById(userId);
     if (user == null)
     {
-        return result.NotFound();
+        return result.NotFound(); // Sets status to NotFound and returns
+    }
+    return result.Success(user); // Sets status to Success and returns the user data
+}
+```
+
+Returning a Response from an API Controller :
+
+In an ASP.NET Core API controller, you can return a ResponseBase directly due to its implicit conversion to ObjectResult:
+```csharp
+[HttpGet("{id}")]
+public IActionResult GetUser(int id)
+{
+      var response = _userService.GetUserById(id);
+      return response; // Implicitly converts to ObjectResult
+}
+```
+
+You can also convert HTTP status codes directly into ResponseBase:
+
+```csharp
+public ResponseBase<string> DeleteUser(int userId)
+{
+    var result = _userRepository.Delete(userId);
+    if (!result)
+    {
+        return HttpStatusCode.BadRequest; // Converts to ResponseBase with appropriate status
     }
 
-    return result.Success();
+    return HttpStatusCode.OK; // Converts to ResponseBase with status success
 }
+```
+
+
+
+
 
 
 
